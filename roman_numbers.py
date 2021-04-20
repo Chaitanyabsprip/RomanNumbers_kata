@@ -1,13 +1,14 @@
+from math import floor
+
+
 class RomanNumber:
     def __init__(self):
         self.rn = {1: "I", 5: "V", 10: "X",
                    50: "L", 100: "C", 500: "D", 1000: "M"}
 
     def fromInt(self, integer):
-        print(f'integer {integer}')
         converted_roman_number = self.__prefix(integer) + self.__major(integer) + \
             self.__suffix(integer)
-        print(f'roman number {converted_roman_number}')
         return converted_roman_number
 
     def toInt(self, romanNumber):
@@ -30,7 +31,6 @@ class RomanNumber:
         prefix = self.rn[100] if ((integer + adjustment) %
                                   1000) == 0 and integer < 1000 else prefix
         assert len(prefix) <= 1
-        print(f'prefix {prefix}')
         return prefix
 
     def __major(self, integer):
@@ -41,12 +41,10 @@ class RomanNumber:
         major = roman_digit
         if numeric_equivalent == 1:
             major = integer * roman_digit
-            print(f'major {major}')
         return major
 
     def __suffix(self, integer):
         no_of_digits = len(str(integer))
-        # mN = self.__conversionNumber(integer + 10 ** (no_of_digits - 2))
         adjustment = 10 ** (no_of_digits - 1) if no_of_digits > 1 else 0
         mN = self.__conversionNumber(integer + adjustment)
         aN_list = list(self.rn.keys())
@@ -57,9 +55,8 @@ class RomanNumber:
             if integer >= mN:
                 suffix = self.fromInt(integer - mN)
             else:
-                pN = aN_list[aN_list.index(mN) - 1]
+                pN = aN_list[2 * floor((aN_list.index(mN) - 1) / 2)]
                 suffix = self.fromInt(integer - (mN - pN))
-        print(f'suffix {suffix}')
         return suffix
 
     def __conversionNumber(self, integer):
