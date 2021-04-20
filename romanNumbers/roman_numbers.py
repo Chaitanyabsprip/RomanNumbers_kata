@@ -22,7 +22,18 @@ class NotIntegerError(RomanError):
     pass
 
 
-class RomanNumber:
+class RomanNumbers:
+    def __init__(self):
+        pass
+
+    def toInt(self, integer):
+        pass
+
+    def fromInt(self, romanNumber):
+        pass
+
+
+class SubtractiveRecursion(RomanNumbers):
     def __init__(self):
         self.rn = {1: "I", 5: "V", 10: "X",
                    50: "L", 100: "C", 500: "D", 1000: "M"}
