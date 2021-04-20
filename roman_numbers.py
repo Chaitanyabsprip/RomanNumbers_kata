@@ -15,6 +15,7 @@ class RomanNumber:
 
     def __prefix(self, integer):
         no_of_digits = len(str(integer))
+        integer = int(str(integer)[0]) * 10 ** (len(str(integer)) - 1)
         adjustment = 10 ** (no_of_digits - 1) if no_of_digits > 1 else 1
         prefix = self.rn[1] if ((integer + adjustment) %
                                 5) == 0 and integer < 5 else ""
@@ -35,11 +36,11 @@ class RomanNumber:
     def __major(self, integer):
         no_of_digits = len(str(integer))
         adjustment = 10 ** (no_of_digits - 1) if no_of_digits > 1 else 1
-        mN = self.__conversionNumber(integer + adjustment)
-        mRn = self.rn[mN]
-        major = mRn
-        if mN == 1:
-            major = integer * mRn
+        numeric_equivalent = self.__conversionNumber(integer + adjustment)
+        roman_digit = self.rn[numeric_equivalent]
+        major = roman_digit
+        if numeric_equivalent == 1:
+            major = integer * roman_digit
             print(f'major {major}')
         return major
 
@@ -51,7 +52,8 @@ class RomanNumber:
         aN_list = list(self.rn.keys())
         suffix = ""
 
-        if integer >= 5 and (integer + 1) % mN != 0 or integer >= 10:
+        if integer >= 5 and (integer + 1) % mN != 0 or integer >= 10 and (
+                integer + 10) % mN != 0 or integer >= 100:
             if integer >= mN:
                 suffix = self.fromInt(integer - mN)
             else:
