@@ -5,46 +5,58 @@ class RomanNumber:
 
     def fromInt(self, integer):
         print(f'integer {integer}')
-        rn = self.__prefix(integer) + self.__major(integer) + \
+        converted_roman_number = self.__prefix(integer) + self.__major(integer) + \
             self.__suffix(integer)
-        print(f'roman number {rn}')
-        return rn
+        print(f'roman number {converted_roman_number}')
+        return converted_roman_number
 
     def toInt(self, romanNumber):
         pass
 
     def __prefix(self, integer):
-        prefix = self.rn[1] if ((integer + 1) % 5) == 0 and integer < 5 else ""
-        prefix = self.rn[1] if ((integer + 1) %
+        no_of_digits = len(str(integer))
+        adjustment = 10 ** (no_of_digits - 1) if no_of_digits > 1 else 1
+        prefix = self.rn[1] if ((integer + adjustment) %
+                                5) == 0 and integer < 5 else ""
+        prefix = self.rn[1] if ((integer + adjustment) %
                                 10) == 0 and integer < 10 else prefix
-        prefix = self.rn[10] if ((integer + 1) %
+        prefix = self.rn[10] if ((integer + adjustment) %
                                  50) == 0 and integer < 50 else prefix
-        prefix = self.rn[10] if ((integer + 1) %
+        prefix = self.rn[10] if ((integer + adjustment) %
                                  100) == 0 and integer < 100 else prefix
-        prefix = self.rn[100] if ((integer + 1) %
+        prefix = self.rn[100] if ((integer + adjustment) %
                                   500) == 0 and integer < 500 else prefix
-        prefix = self.rn[100] if ((integer + 1) %
+        prefix = self.rn[100] if ((integer + adjustment) %
                                   1000) == 0 and integer < 1000 else prefix
         assert len(prefix) <= 1
         print(f'prefix {prefix}')
         return prefix
 
     def __major(self, integer):
-        mN = self.__conversionNumber(integer + 10 ** (len(str(integer)) - 2))
+        no_of_digits = len(str(integer))
+        adjustment = 10 ** (no_of_digits - 1) if no_of_digits > 1 else 1
+        mN = self.__conversionNumber(integer + adjustment)
         mRn = self.rn[mN]
         major = mRn
         if mN == 1:
             major = integer * mRn
-        print(f'major {major}')
+            print(f'major {major}')
         return major
 
     def __suffix(self, integer):
-        mN = self.__conversionNumber(integer)
-        mN = self.__conversionNumber(integer + 10 ** (len(str(integer)) - 2))
+        no_of_digits = len(str(integer))
+        # mN = self.__conversionNumber(integer + 10 ** (no_of_digits - 2))
+        adjustment = 10 ** (no_of_digits - 1) if no_of_digits > 1 else 0
+        mN = self.__conversionNumber(integer + adjustment)
+        aN_list = list(self.rn.keys())
         suffix = ""
 
         if integer >= 5 and (integer + 1) % mN != 0 or integer >= 10:
-            suffix = self.fromInt(integer - mN)
+            if integer >= mN:
+                suffix = self.fromInt(integer - mN)
+            else:
+                pN = aN_list[aN_list.index(mN) - 1]
+                suffix = self.fromInt(integer - (mN - pN))
         print(f'suffix {suffix}')
         return suffix
 
