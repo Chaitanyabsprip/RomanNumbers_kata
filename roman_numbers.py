@@ -1,12 +1,39 @@
 from math import floor
 
 
+"""Convert to and from Roman numerals"""
+
+__author__ = "Chaitanya Sharma (chaitanyasanjeevsharma@gmail.com)"
+__version__ = "1.0"
+__date__ = "20 April 2021"
+
+# Define exceptions
+
+
+class RomanError(Exception):
+    pass
+
+
+class OutOfRangeError(RomanError):
+    pass
+
+
+class NotIntegerError(RomanError):
+    pass
+
+
 class RomanNumber:
     def __init__(self):
         self.rn = {1: "I", 5: "V", 10: "X",
                    50: "L", 100: "C", 500: "D", 1000: "M"}
 
     def fromInt(self, integer):
+        """convert integer to Roman numeral"""
+        if not isinstance(integer, int):
+            raise NotIntegerError("decimals can not be converted")
+        if not (-1 < integer < 5000):
+            raise OutOfRangeError("number out of range (must be 0..4999)")
+
         converted_roman_number = self.__prefix(integer) + self.__major(integer) + \
             self.__suffix(integer)
         return converted_roman_number
